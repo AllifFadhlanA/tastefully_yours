@@ -25,7 +25,7 @@ class ApiConstants {
   static const String categories = '$baseUrl/categories';
 
   // Storage (gambar)
-  static const String storageUrl = 'http://10.0.2.2:8000/storage';
+  static const String storageUrl = 'http://192.168.1.6:8000/storage';
   static String imageUrl(String? path) {
     if (path == null || path.isEmpty) return '';
     if (path.startsWith('http')) return path;

@@ -86,12 +86,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
         _difficulty = recipe.difficultyLabel;
         _existingImageUrl = recipe.image;
 
-        // TODO: sesuaikan baris ini dengan struktur RecipeModel kamu.
-        // Jika RecipeModel punya properti tunggal `recipe.category` (object CategoryModel),
-        // pakai baris ini:
         _selectedCategoryId = recipe.category?.id;
-        // Jika ternyata modelmu masih punya `recipe.categories` (List), pakai baris ini sebagai gantinya:
-        // _selectedCategoryId = recipe.categories.isNotEmpty ? recipe.categories.first.id : null;
 
         for (var ing in recipe.ingredients) {
           _ingredients.add(
@@ -340,8 +335,9 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                   hintText: 'e.g. Grandma\'s Apple Pie',
                 ),
                 validator: (val) {
-                  if (val == null || val.trim().isEmpty)
+                  if (val == null || val.trim().isEmpty) {
                     return 'Judul tidak boleh kosong';
+                  }
                   return null;
                 },
               ),
@@ -550,8 +546,9 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                                   horizontal: 12, vertical: 10),
                             ),
                             validator: (val) {
-                              if (val == null || val.trim().isEmpty)
+                              if (val == null || val.trim().isEmpty) {
                                 return 'Required';
+                              }
                               return null;
                             },
                           ),
@@ -568,8 +565,9 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                                   horizontal: 12, vertical: 10),
                             ),
                             validator: (val) {
-                              if (val == null || val.trim().isEmpty)
+                              if (val == null || val.trim().isEmpty) {
                                 return 'Required';
+                              }
                               return null;
                             },
                           ),
@@ -647,8 +645,9 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                                   horizontal: 12, vertical: 10),
                             ),
                             validator: (val) {
-                              if (val == null || val.trim().isEmpty)
+                              if (val == null || val.trim().isEmpty) {
                                 return 'Required';
+                              }
                               return null;
                             },
                           ),

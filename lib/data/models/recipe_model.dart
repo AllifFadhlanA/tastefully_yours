@@ -12,7 +12,7 @@ class RecipeModel {
   final String? difficulty;
   final int? servings;
   final int? calories;
-  final List<CategoryModel> categories;
+  final CategoryModel? category;
   final List<IngredientModel> ingredients;
   final List<InstructionModel> instructions;
   final bool isFavorited;
@@ -28,7 +28,7 @@ class RecipeModel {
     this.difficulty,
     this.servings,
     this.calories,
-    this.categories = const [],
+    this.category,
     this.ingredients = const [],
     this.instructions = const [],
     this.isFavorited = false,
@@ -36,19 +36,27 @@ class RecipeModel {
   });
 
   factory RecipeModel.fromJson(Map<String, dynamic> json) {
+    CategoryModel? cat;
+    if (json['category'] != null && json['category'] is Map<String, dynamic>) {
+      cat = CategoryModel.fromJson(json['category'] as Map<String, dynamic>);
+    } else if (json['categories'] != null &&
+        json['categories'] is List &&
+        (json['categories'] as List).isNotEmpty) {
+      cat = CategoryModel.fromJson(
+          (json['categories'] as List).first as Map<String, dynamic>);
+    }
+
     return RecipeModel(
-      id: json['id'] as int,
-      userId: json['user_id'] as int,
+      id: _toInt(json['id'])!,
+      userId: _toInt(json['user_id'])!,
       title: json['title'] as String,
       description: json['description'] as String?,
       image: json['image'] as String?,
-      cookTime: json['cook_time'] as int?,
+      cookTime: _toInt(json['cook_time']),
       difficulty: json['difficulty'] as String?,
-      servings: json['servings'] as int?,
-      calories: json['calories'] as int?,
-      categories: (json['categories'] as List<dynamic>? ?? [])
-          .map((c) => CategoryModel.fromJson(c as Map<String, dynamic>))
-          .toList(),
+      servings: _toInt(json['servings']),
+      calories: _toInt(json['calories']),
+      category: cat,
       ingredients: (json['ingredients'] as List<dynamic>? ?? [])
           .map((i) => IngredientModel.fromJson(i as Map<String, dynamic>))
           .toList(),
@@ -58,6 +66,15 @@ class RecipeModel {
       isFavorited: json['is_favorited'] as bool? ?? false,
       userName: json['user']?['name'] as String?,
     );
+  }
+
+// Helper: parse int dari dynamic yang bisa berupa int ATAU String
+  static int? _toInt(dynamic value) {
+    if (value == null) return null;
+    if (value is int) return value;
+    if (value is String) return int.tryParse(value);
+    if (value is double) return value.toInt();
+    return null;
   }
 
   RecipeModel copyWith({
@@ -73,7 +90,7 @@ class RecipeModel {
       difficulty: difficulty,
       servings: servings,
       calories: calories,
-      categories: categories,
+      category: category,
       ingredients: ingredients,
       instructions: instructions,
       isFavorited: isFavorited ?? this.isFavorited,
@@ -81,10 +98,7 @@ class RecipeModel {
     );
   }
 
-  String get categoryLabel {
-    if (categories.isEmpty) return 'General';
-    return categories.first.name;
-  }
+  String get categoryLabel => category?.name ?? 'General';
 
   String get difficultyLabel => difficulty ?? 'Easy';
 
