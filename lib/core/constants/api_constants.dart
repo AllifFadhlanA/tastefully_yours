@@ -1,8 +1,11 @@
 class ApiConstants {
   ApiConstants._();
 
-  // Base URL — gunakan 10.0.2.2 untuk emulator Android, ganti ke IP lokal untuk HP fisik
-  static const String baseUrl = 'http://192.168.1.6:8000/api';
+  // Ganti IP ini saja kalau IP laptop berubah (cek lewat ipconfig)
+  static const String host = 'http://192.168.1.9:8000';
+
+  // Base URL
+  static const String baseUrl = '$host/api';
 
   // Auth
   static const String register = '$baseUrl/register';
@@ -25,7 +28,7 @@ class ApiConstants {
   static const String categories = '$baseUrl/categories';
 
   // Storage (gambar)
-  static const String storageUrl = 'http://192.168.1.6:8000/storage';
+  static const String storageUrl = '$host/api/images';
   static String imageUrl(String? path) {
     if (path == null || path.isEmpty) return '';
     if (path.startsWith('http')) return path;

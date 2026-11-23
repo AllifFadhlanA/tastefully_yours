@@ -48,50 +48,12 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
+      backgroundColor: Colors.white, // Background putih polos
+      body: SizedBox(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Color(0xFFFDFBF7),
-              Color(0xFFF5EDD8),
-              Color(0xFFEDD9A3),
-            ],
-            stops: [0.0, 0.6, 1.0],
-          ),
-        ),
         child: Stack(
           children: [
-            // Decorative top-right circle
-            Positioned(
-              top: -80,
-              right: -60,
-              child: Container(
-                width: 240,
-                height: 240,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppColors.primary.withAlpha(25),
-                ),
-              ),
-            ),
-            // Decorative bottom-left circle
-            Positioned(
-              bottom: 100,
-              left: -80,
-              child: Container(
-                width: 200,
-                height: 200,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppColors.accent.withAlpha(20),
-                ),
-              ),
-            ),
-
             // Main content
             Center(
               child: FadeTransition(
@@ -103,26 +65,12 @@ class _SplashScreenState extends State<SplashScreen>
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // Logo Container
-                        Container(
-                          width: 110,
-                          height: 110,
-                          decoration: BoxDecoration(
-                            color: AppColors.primary,
-                            borderRadius: BorderRadius.circular(32),
-                            boxShadow: [
-                              BoxShadow(
-                                color: AppColors.primary.withAlpha(80),
-                                blurRadius: 30,
-                                offset: const Offset(0, 12),
-                              ),
-                            ],
-                          ),
-                          child: const Icon(
-                            Icons.restaurant_menu_rounded,
-                            color: Colors.white,
-                            size: 56,
-                          ),
+                        // Logo tanpa Container / tanpa border & kotak latar belakang
+                        Image.asset(
+                          'assets/images/logo.png', // Path logo milikmu
+                          width: 120, // Sesuaikan ukuran lebar logo
+                          height: 120, // Sesuaikan ukuran tinggi logo
+                          fit: BoxFit.contain,
                         ),
                         const SizedBox(height: 28),
 

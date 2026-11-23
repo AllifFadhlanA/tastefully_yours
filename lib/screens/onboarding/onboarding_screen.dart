@@ -27,7 +27,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
       curve: Curves.easeIn,
     );
     _slideAnim = Tween<Offset>(
-      begin: const Offset(0, 0.15),
+      begin: const Offset(0, 0.1),
       end: Offset.zero,
     ).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic),
@@ -43,283 +43,157 @@ class _OnboardingScreenState extends State<OnboardingScreen>
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      backgroundColor: AppColors.backgroundWarm,
-      body: SafeArea(
-        child: FadeTransition(
-          opacity: _fadeAnim,
-          child: SlideTransition(
-            position: _slideAnim,
-            child: Column(
-              children: [
-                // Hero Illustration Area
-                Expanded(
-                  flex: 5,
-                  child: Stack(
+      backgroundColor: const Color(0xFFF9F8F6),
+      body: FadeTransition(
+        opacity: _fadeAnim,
+        child: SlideTransition(
+          position: _slideAnim,
+          child: Stack(
+            children: [
+              // 1. Gambar Makanan Latar Belakang Penuh
+              Positioned.fill(
+                child: Image.asset(
+                  'assets/images/background_image.png',
+                  fit: BoxFit.cover,
+                  alignment: Alignment.topCenter,
+                ),
+              ),
+
+              // 2. Card Putih di Bawah (Dinaikkan Setinggi Garis Oranye)
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  width: double.infinity,
+                  // Mengatur tinggi container agar naik setinggi batas garis oranye
+                  height: screenHeight * 0.50,
+                  padding: const EdgeInsets.fromLTRB(28, 36, 28, 60),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(36),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.10),
+                        blurRadius: 20,
+                        offset: const Offset(0, -4),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Background gradient panel
-                      Container(
-                        width: double.infinity,
-                        decoration: const BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: [Color(0xFFF5EDD8), Color(0xFFFDFBF7)],
+                      // Headline Text
+                      RichText(
+                        text: TextSpan(
+                          style: const TextStyle(
+                            fontFamily: 'Poppins',
+                            fontSize: 28,
+                            fontWeight: FontWeight.w800,
+                            height: 1.2,
+                            color: Colors.black87,
                           ),
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(40),
-                            bottomRight: Radius.circular(40),
-                          ),
+                          children: [
+                            const TextSpan(text: 'Cook with\n'),
+                            TextSpan(
+                              text: 'Confident',
+                              style: TextStyle(
+                                color: AppColors.primary,
+                              ),
+                            ),
+                            const TextSpan(
+                              text: ' & ',
+                              style: TextStyle(color: Colors.black87),
+                            ),
+                            TextSpan(
+                              text: 'Joy',
+                              style: TextStyle(
+                                color: AppColors.primary,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+
+                      // Subtitle / Description
+                      const Text(
+                        'discover thousands of recipes tailored for you — from quick weeknight dinner to impresive weekend feasts.',
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 14,
+                          color: Colors.black54,
+                          height: 1.5,
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
 
-                      // Ingredient cards & main card
+                      // Memberi jarak fleksibel agar tombol terdorong rapi ke bawah
+                      const Spacer(),
+
+                      // Get Started Button
+                      SizedBox(
+                        width: double.infinity,
+                        height: 52,
+                        child: OutlinedButton(
+                          onPressed: () => context.go('/auth'),
+                          style: OutlinedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            side: const BorderSide(
+                                color: Colors.black12, width: 1.5),
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                          ),
+                          child: const Text(
+                            'Get Started',
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: 15,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 18),
+
+                      // Already have an account? Log in
                       Center(
-                        child: SizedBox(
-                          width: size.width * 0.8,
-                          child: Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              // Left rotated card
-                              Positioned(
-                                left: 0,
-                                top: 60,
-                                child: Transform.rotate(
-                                  angle: -0.18,
-                                  child: _buildIngredientCard(
-                                    icon: Icons.egg_rounded,
-                                    label: 'Fresh Eggs',
-                                    color: const Color(0xFFFFF9C4),
-                                    iconColor: const Color(0xFFF9A825),
+                        child: GestureDetector(
+                          onTap: () => context.go('/auth'),
+                          child: const Text.rich(
+                            TextSpan(
+                              style: TextStyle(
+                                fontFamily: 'Poppins',
+                                fontSize: 13,
+                                color: Colors.black87,
+                              ),
+                              children: [
+                                TextSpan(text: 'Already have an account? '),
+                                TextSpan(
+                                  text: 'Log in',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.black,
                                   ),
                                 ),
-                              ),
-                              // Right rotated card
-                              Positioned(
-                                right: 0,
-                                top: 60,
-                                child: Transform.rotate(
-                                  angle: 0.18,
-                                  child: _buildIngredientCard(
-                                    icon: Icons.spa_rounded,
-                                    label: 'Herbs & Spices',
-                                    color: const Color(0xFFC8E6C9),
-                                    iconColor: const Color(0xFF388E3C),
-                                  ),
-                                ),
-                              ),
-                              // Centre main card
-                              _buildMainCard(),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
                     ],
                   ),
                 ),
-
-                // Text Content
-                Expanded(
-                  flex: 4,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 28),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 32),
-
-                        // Headline
-                        RichText(
-                          text: const TextSpan(
-                            style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontSize: 30,
-                              fontWeight: FontWeight.w800,
-                              height: 1.2,
-                              color: AppColors.textPrimary,
-                            ),
-                            children: [
-                              TextSpan(text: 'Cook with\n'),
-                              TextSpan(
-                                text: 'Confidence',
-                                style: TextStyle(color: AppColors.primary),
-                              ),
-                              TextSpan(text: ' & Joy'),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 14),
-
-                        const Text(
-                          'Discover thousands of recipes tailored for you — from quick weeknight dinners to impressive weekend feasts.',
-                          style: TextStyle(
-                            fontFamily: 'Poppins',
-                            fontSize: 14,
-                            color: AppColors.textSecondary,
-                            height: 1.6,
-                          ),
-                        ),
-                        const Spacer(),
-
-                        // Get Started Button
-                        SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            onPressed: () => context.go('/auth'),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.primary,
-                              foregroundColor: Colors.white,
-                              elevation: 0,
-                              padding: const EdgeInsets.symmetric(vertical: 18),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(18),
-                              ),
-                            ),
-                            child: const Text(
-                              'Get Started',
-                              style: TextStyle(
-                                fontFamily: 'Poppins',
-                                fontSize: 16,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-
-                        // Already have account
-                        Center(
-                          child: GestureDetector(
-                            onTap: () => context.go('/auth'),
-                            child: const Text.rich(
-                              TextSpan(
-                                style: TextStyle(
-                                  fontFamily: 'Poppins',
-                                  fontSize: 14,
-                                  color: AppColors.textSecondary,
-                                ),
-                                children: [
-                                  TextSpan(text: 'Already have an account? '),
-                                  TextSpan(
-                                    text: 'Log in',
-                                    style: TextStyle(
-                                      color: AppColors.primary,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 32),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildIngredientCard({
-    required IconData icon,
-    required String label,
-    required Color color,
-    required Color iconColor,
-  }) {
-    return Container(
-      width: 100,
-      height: 100,
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withAlpha(15),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, color: iconColor, size: 36),
-          const SizedBox(height: 6),
-          Text(
-            label,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontFamily: 'Poppins',
-              fontSize: 10,
-              fontWeight: FontWeight.w600,
-              color: iconColor,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildMainCard() {
-    return Container(
-      width: 180,
-      height: 200,
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [AppColors.primary, AppColors.accent],
-        ),
-        borderRadius: BorderRadius.circular(28),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.primary.withAlpha(100),
-            blurRadius: 30,
-            offset: const Offset(0, 16),
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(Icons.restaurant_rounded, color: Colors.white, size: 56),
-          const SizedBox(height: 12),
-          const Text(
-            'Tastefully\nYours',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontFamily: 'Poppins',
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.w700,
-              height: 1.3,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-            decoration: BoxDecoration(
-              color: Colors.white.withAlpha(40),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: const Text(
-              '50K+ Recipes',
-              style: TextStyle(
-                fontFamily: 'Poppins',
-                color: Colors.white,
-                fontSize: 11,
-                fontWeight: FontWeight.w600,
               ),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

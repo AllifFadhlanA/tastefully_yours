@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 import '../models/recipe_model.dart';
 import '../models/category_model.dart';
 import '../../core/constants/api_constants.dart';
@@ -49,11 +50,13 @@ class RecipeService {
         .toList();
   }
 
-  /// Create a new recipe (with optional image file)
+  /// Create a new recipe (with optional image file or bytes)
   static Future<RecipeModel> createRecipe({
     required String title,
     String? description,
     File? imageFile,
+    Uint8List? imageBytes,
+    String? imageFilename,
     int? cookTime,
     String? difficulty,
     int? servings,
@@ -78,6 +81,8 @@ class RecipeService {
       ApiConstants.recipes,
       fields: fields,
       imageFile: imageFile,
+      imageBytes: imageBytes,
+      imageFilename: imageFilename,
       withAuth: true,
     );
 
@@ -92,6 +97,8 @@ class RecipeService {
     required String title,
     String? description,
     File? imageFile,
+    Uint8List? imageBytes,
+    String? imageFilename,
     int? cookTime,
     String? difficulty,
     int? servings,
@@ -116,6 +123,8 @@ class RecipeService {
       ApiConstants.updateRecipe(id),
       fields: fields,
       imageFile: imageFile,
+      imageBytes: imageBytes,
+      imageFilename: imageFilename,
       withAuth: true,
       isPut: true,
     );

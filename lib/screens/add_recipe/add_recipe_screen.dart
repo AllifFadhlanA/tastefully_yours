@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'dart:typed_data';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -28,6 +30,8 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
 
   // Form Fields
   File? _selectedImage;
+  Uint8List? _selectedImageBytes;
+  String? _selectedImageName;
   String? _existingImageUrl;
   final _titleCtrl = TextEditingController();
   final _descCtrl = TextEditingController();
@@ -158,8 +162,15 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
         imageQuality: 80,
       );
       if (pickedFile != null) {
+        final bytes = await pickedFile.readAsBytes();
         setState(() {
-          _selectedImage = File(pickedFile.path);
+          _selectedImageBytes = bytes;
+          _selectedImageName = pickedFile.name;
+          if (!kIsWeb) {
+            _selectedImage = File(pickedFile.path);
+          } else {
+            _selectedImage = null;
+          }
         });
       }
     } catch (_) {
@@ -173,7 +184,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
       _showSnackBar('Pilih kategori resep.', isError: true);
       return;
     }
-    if (!_isEditMode && _selectedImage == null) {
+    if (!_isEditMode && _selectedImage == null && _selectedImageBytes == null) {
       _showSnackBar('Silakan pilih gambar resep.', isError: true);
       return;
     }
@@ -199,6 +210,8 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
           title: _titleCtrl.text.trim(),
           description: _descCtrl.text.trim(),
           imageFile: _selectedImage,
+          imageBytes: _selectedImageBytes,
+          imageFilename: _selectedImageName,
           cookTime: int.tryParse(_cookTimeCtrl.text.trim()),
           difficulty: _difficulty,
           servings: int.tryParse(_servingsCtrl.text.trim()),
@@ -213,6 +226,8 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
           title: _titleCtrl.text.trim(),
           description: _descCtrl.text.trim(),
           imageFile: _selectedImage,
+          imageBytes: _selectedImageBytes,
+          imageFilename: _selectedImageName,
           cookTime: int.tryParse(_cookTimeCtrl.text.trim()),
           difficulty: _difficulty,
           servings: int.tryParse(_servingsCtrl.text.trim()),
@@ -291,10 +306,13 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                           : AppColors.inputBorder,
                     ),
                   ),
-                  child: _selectedImage != null
+                  child: (_selectedImageBytes != null || _selectedImage != null)
                       ? ClipRRect(
                           borderRadius: BorderRadius.circular(20),
-                          child: Image.file(_selectedImage!, fit: BoxFit.cover),
+                          child: (kIsWeb || _selectedImage == null)
+                              ? Image.memory(_selectedImageBytes!,
+                                  fit: BoxFit.cover)
+                              : Image.file(_selectedImage!, fit: BoxFit.cover),
                         )
                       : (_existingImageUrl != null
                           ? ClipRRect(

@@ -4,10 +4,15 @@ class AppColors {
   AppColors._();
 
   // Primary Gold Palette
-  static const Color primary = Color(0xFFD4AF37);
-  static const Color primaryLight = Color(0xFFDCBE56);
-  static const Color primaryDark = Color(0xFFCBA135);
-  static const Color accent = Color(0xFFF3BA42);
+  // static const Color primary = Color(0xFFD4AF37);
+  // static const Color primaryLight = Color(0xFFDCBE56);
+  // static const Color primaryDark = Color(0xFFCBA135);
+  // static const Color accent = Color(0xFFF3BA42);
+
+  static const Color primary = Color(0xFF7C9473);        // hijau sage utama
+  static const Color primaryLight = Color(0xFF9BB090);   // lebih terang
+  static const Color primaryDark = Color(0xFF5F7658);    // lebih gelap
+  static const Color accent = Color(0xFFA8C090);         // aksen lebih muda
 
   // Background
   static const Color backgroundWarm = Color(0xFFFDFBF7);
@@ -40,5 +45,6 @@ class AppColors {
   static const Color shadow = Color(0x1A000000);
   static const Color cardBackground = Color(0xFFFFFFFF);
   static const Color inputBorder = Color(0xFFD4C8B8);
-  static const Color inputBorderFocused = Color(0xFFD4AF37);
+  // static const Color inputBorderFocused = Color(0xFFD4AF37);
+  static const Color inputBorderFocused = Color(0xFF7C9473);  // samain sama primary
 }

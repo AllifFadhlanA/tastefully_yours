@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiService {
@@ -80,6 +82,8 @@ class ApiService {
     String url, {
     required Map<String, String> fields,
     File? imageFile,
+    Uint8List? imageBytes,
+    String? imageFilename,
     String imageFieldName = 'image',
     bool withAuth = false,
     bool isPut = false,
@@ -100,9 +104,26 @@ class ApiService {
 
       request.fields.addAll(fields);
 
-      if (imageFile != null) {
+      if (imageBytes != null) {
+        final filename = imageFilename ?? 'recipe_image.jpg';
         request.files.add(
-          await http.MultipartFile.fromPath(imageFieldName, imageFile.path),
+          http.MultipartFile.fromBytes(
+            imageFieldName,
+            imageBytes,
+            filename: filename,
+            contentType: _getContentType(filename),
+          ),
+        );
+      } else if (imageFile != null) {
+        final bytes = await imageFile.readAsBytes();
+        final filename = imageFile.path.split('/').last.split('\\').last;
+        request.files.add(
+          http.MultipartFile.fromBytes(
+            imageFieldName,
+            bytes,
+            filename: filename,
+            contentType: _getContentType(filename),
+          ),
         );
       }
 
@@ -111,6 +132,22 @@ class ApiService {
       return _handleResponse(response);
     } on SocketException {
       throw Exception('Tidak ada koneksi internet. Periksa koneksi Anda.');
+    }
+  }
+
+  static MediaType _getContentType(String filename) {
+    final ext = filename.split('.').last.toLowerCase();
+    switch (ext) {
+      case 'png':
+        return MediaType('image', 'png');
+      case 'webp':
+        return MediaType('image', 'webp');
+      case 'gif':
+        return MediaType('image', 'gif');
+      case 'jpg':
+      case 'jpeg':
+      default:
+        return MediaType('image', 'jpeg');
     }
   }
 
