@@ -22,11 +22,14 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
     });
   }
 
-  void _showDeleteConfirmDialog(BuildContext context, int recipeId, RecipeProvider provider) {
+  void _showDeleteConfirmDialog(
+      BuildContext context, int recipeId, RecipeProvider provider) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Delete Recipe', style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold)),
+        title: const Text('Delete Recipe',
+            style:
+                TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold)),
         content: const Text(
           'Delete this recipe? This can\'t be undone.',
           style: TextStyle(fontFamily: 'Poppins'),
@@ -34,7 +37,9 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel', style: TextStyle(fontFamily: 'Poppins', color: AppColors.textHint)),
+            child: const Text('Cancel',
+                style: TextStyle(
+                    fontFamily: 'Poppins', color: AppColors.textHint)),
           ),
           ElevatedButton(
             onPressed: () async {
@@ -43,11 +48,13 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
               if (success) {
                 _showSnackBar('Resep berhasil dihapus.');
               } else {
-                _showSnackBar(provider.errorMessage ?? 'Gagal menghapus resep.', isError: true);
+                _showSnackBar(provider.errorMessage ?? 'Gagal menghapus resep.',
+                    isError: true);
               }
             },
             style: ElevatedButton.styleFrom(backgroundColor: AppColors.error),
-            child: const Text('Delete', style: TextStyle(fontFamily: 'Poppins', color: Colors.white)),
+            child: const Text('Delete',
+                style: TextStyle(fontFamily: 'Poppins', color: Colors.white)),
           ),
         ],
       ),
@@ -89,29 +96,32 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
     }
 
     if (provider.myRecipesState == RecipeLoadState.error) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 40),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.cloud_off_rounded, size: 64, color: AppColors.error),
-            const SizedBox(height: 16),
-            Text(
-              provider.errorMessage ?? 'Gagal memuat resep.',
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontFamily: 'Poppins',
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 40),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.cloud_off_rounded,
+                  size: 64, color: AppColors.error),
+              const SizedBox(height: 16),
+              Text(
+                provider.errorMessage ?? 'Gagal memuat resep.',
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontFamily: 'Poppins',
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton.icon(
-              onPressed: () => provider.loadMyRecipes(),
-              icon: const Icon(Icons.refresh_rounded),
-              label: const Text('Retry'),
-            ),
-          ],
+              const SizedBox(height: 16),
+              ElevatedButton.icon(
+                onPressed: () => provider.loadMyRecipes(),
+                icon: const Icon(Icons.refresh_rounded),
+                label: const Text('Retry'),
+              ),
+            ],
+          ),
         ),
       );
     }
@@ -119,34 +129,39 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
     final recipes = provider.myRecipes;
 
     if (recipes.isEmpty) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 40),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.restaurant_menu_rounded,
-              size: 64,
-              color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondary,
-            ),
-            const SizedBox(height: 16),
-            Text(
-              'You haven\'t created any recipes yet',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontFamily: 'Poppins',
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondary,
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 40),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.restaurant_menu_rounded,
+                size: 64,
+                color: isDark
+                    ? AppColors.textSecondaryDark
+                    : AppColors.textSecondary,
               ),
-            ),
-            const SizedBox(height: 24),
-            ElevatedButton.icon(
-              onPressed: () => context.push('/add-recipe'),
-              icon: const Icon(Icons.add_rounded),
-              label: const Text('Create Your First Recipe'),
-            ),
-          ],
+              const SizedBox(height: 16),
+              Text(
+                'You haven\'t created any recipes yet',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontFamily: 'Poppins',
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: isDark
+                      ? AppColors.textSecondaryDark
+                      : AppColors.textSecondary,
+                ),
+              ),
+              const SizedBox(height: 24),
+              ElevatedButton(
+                onPressed: () => context.push('/add-recipe'),
+                child: const Text('Create Your First Recipe'),
+              ),
+            ],
+          ),
         ),
       );
     }
@@ -167,7 +182,9 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
                     fontFamily: 'Poppins',
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondary,
+                    color: isDark
+                        ? AppColors.textSecondaryDark
+                        : AppColors.textSecondary,
                   ),
                 ),
                 TextButton.icon(
@@ -212,7 +229,9 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
                             placeholder: (context, url) => Container(
                               width: 80,
                               height: 80,
-                              color: isDark ? AppColors.dividerDark : AppColors.divider,
+                              color: isDark
+                                  ? AppColors.dividerDark
+                                  : AppColors.divider,
                               child: const Center(
                                 child: CircularProgressIndicator(
                                   color: AppColors.primary,
@@ -223,8 +242,11 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
                             errorWidget: (context, url, error) => Container(
                               width: 80,
                               height: 80,
-                              color: isDark ? AppColors.dividerDark : AppColors.divider,
-                              child: const Icon(Icons.restaurant_rounded, color: AppColors.primary),
+                              color: isDark
+                                  ? AppColors.dividerDark
+                                  : AppColors.divider,
+                              child: const Icon(Icons.restaurant_rounded,
+                                  color: AppColors.primary),
                             ),
                           ),
                         ),
@@ -287,12 +309,16 @@ class _MyRecipesScreenState extends State<MyRecipesScreen> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             IconButton(
-                              icon: const Icon(Icons.edit_outlined, color: AppColors.primary),
-                              onPressed: () => context.push('/add-recipe?recipeId=${recipe.id}'),
+                              icon: const Icon(Icons.edit_outlined,
+                                  color: AppColors.primary),
+                              onPressed: () => context
+                                  .push('/add-recipe?recipeId=${recipe.id}'),
                             ),
                             IconButton(
-                              icon: const Icon(Icons.delete_outline_rounded, color: AppColors.error),
-                              onPressed: () => _showDeleteConfirmDialog(context, recipe.id, provider),
+                              icon: const Icon(Icons.delete_outline_rounded,
+                                  color: AppColors.error),
+                              onPressed: () => _showDeleteConfirmDialog(
+                                  context, recipe.id, provider),
                             ),
                           ],
                         ),
