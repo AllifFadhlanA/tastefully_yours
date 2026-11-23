@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../core/constants/app_colors.dart';
 import '../../providers/auth_provider.dart';
+import '../../widgets/app_logo.dart';
 
 class AuthScreen extends StatefulWidget {
   final int initialTab;
@@ -113,19 +114,7 @@ class _AuthScreenState extends State<AuthScreen>
               // Header Row
               Row(
                 children: [
-                  Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: AppColors.primary,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: const Icon(
-                      Icons.restaurant_menu_rounded,
-                      color: Colors.white,
-                      size: 22,
-                    ),
-                  ),
+                  const AppLogo(size: 40),
                   const SizedBox(width: 12),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -330,7 +319,9 @@ class _AuthScreenState extends State<AuthScreen>
               ),
             ),
             validator: (val) {
-              if (val == null || val.isEmpty) return 'Password tidak boleh kosong';
+              if (val == null || val.isEmpty) {
+                return 'Password tidak boleh kosong';
+              }
               return null;
             },
           ),
@@ -583,7 +574,9 @@ class _AuthScreenState extends State<AuthScreen>
               ),
             ),
             validator: (val) {
-              if (val == null || val.isEmpty) return 'Password tidak boleh kosong';
+              if (val == null || val.isEmpty) {
+                return 'Password tidak boleh kosong';
+              }
               if (val.length < 8) return 'Password minimal 8 karakter';
               return null;
             },
